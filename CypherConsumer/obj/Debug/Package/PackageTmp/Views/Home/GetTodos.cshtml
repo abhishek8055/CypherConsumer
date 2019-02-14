@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CypherConsumer.Models.TodoList>
+
+@{
+    ViewBag.Title = "GetTodos";
+}
+
+<h2>GetTodos</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateTodo")
+</p>
+
+<div>
+    <table class="table table-bordered table-hover" id="todos">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+@section scripts{
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $("#todos").DataTable({
+                ajax: {
+                    url: "http://localhost/cypherapi/api/todo/GetTodoItems",
+                    method: "GET",
+                    crossDomain: true,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Id"                       
+                    },
+                    {
+                        data: "Name",
+                    },
+                    {
+                        data: "IsComplete"
+                    },
+                    {
+                        data: "Id",
+                        render: function (data) {
+                            return "<a type='button' class='btn btn-success' href='/Home/EditTodo/" + data + "'>Edit</a>";
+                        }
+                    },
+                    {
+                        data: "Id",
+                        render: function (data) {
+                            return "<a type='button' class='btn btn-danger' href='/Home/DeleteTodo/" + data + "'>Delete</a>";
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
